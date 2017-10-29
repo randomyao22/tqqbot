@@ -38,8 +38,8 @@ def isSayGoodbuy(content):
 def isMornigGreeting(content):
     if isMorningTime() == False:
         return
-    keysMatch = ['早', '早啊', 'Morning', 'morning']
-    keysContain = ['早上好', 'ood morning']
+    keysMatch = ['早', '早啊']
+    keysContain = ['早上好']
     for key in keysMatch:
         if content == key:
             return True
