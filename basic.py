@@ -2,8 +2,24 @@
 import random
 from random import randint
 import datetime
+import re
+import benderhelpers
+import pprint
+from qqbot.utf8logger import DEBUG
 
 def onQQMessage(bot, contact, member, content):
+    if contact.ctype != 'group':
+        return
+    
+    if bot.isMe(contact, member):
+        return
+
+    # TODO record this in db so we only reminder user once.
+    if isValidName(member.name) != True and isNameRecorded != True:
+        addNameRecord(memberName)
+        askToCorrectMsg = '@' + member.name + ' Please correct your group name by using format xxx-xxx-xxx. Thanks!'
+        bot.SendTo(contact, askToCorrectMsg)
+
     if isSayGoodbuy(content):
         if 0 == randint(0, 1):
             return
@@ -38,8 +54,8 @@ def isSayGoodbuy(content):
 def isMornigGreeting(content):
     if isMorningTime() == False:
         return
-    keysMatch = ['早', '早啊']
-    keysContain = ['早上好']
+    keysMatch = ['早', '早啊', 'Morning', 'morning']
+    keysContain = ['早上好', 'ood morning']
     for key in keysMatch:
         if content == key:
             return True
@@ -54,4 +70,28 @@ def isMorningTime():
     today10am = now.replace(hour=23, minute=0, second=0, microsecond=0)
     if now < today10am and now > today5am:
         return True
+    return False
+
+def isValidName(memberName):
+    match = re.match(r'^.+-.+-.+', memberName)   
+    isValid = match and match.group(0) == memberName
+    return isValid
+
+def addNameRecord(memberName):
+    import pickle
+    outputFile = 'invalidName.data'
+    fw = open(outputFile, 'wb')
+    pickle.dump(memberName, fw)
+    fw.close()
+
+def isNameRecorded(memberName):
+    import pickle
+    outputFile = 'invalidName.data'
+    fd = open(inputFile, 'rb')
+    while 1:
+        try:
+            if pickle.load(fd) == memberName:
+                return True
+        except EOFError:
+            break
     return False
