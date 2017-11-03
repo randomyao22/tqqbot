@@ -86,7 +86,7 @@ def addNameRecord(memberName):
 
 def isNameRecorded(memberName):
     import pickle
-    outputFile = '/home/ubuntu/.qqbot-tmp/plugins/invalidName.data'
+    inputFile = '/home/ubuntu/.qqbot-tmp/plugins/invalidName.data'
     fd = open(inputFile, 'rb')
     while 1:
         try:
