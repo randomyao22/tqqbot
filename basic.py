@@ -16,7 +16,7 @@ def onQQMessage(bot, contact, member, content):
 
     # TODO record this in db so we only reminder user once.
     if isValidName(member.name) != True and isNameRecorded != True:
-        addNameRecord(memberName)
+        addNameRecord(member.name)
         askToCorrectMsg = '@' + member.name + ' Please correct your group name by using format xxx-xxx-xxx. Thanks!'
         bot.SendTo(contact, askToCorrectMsg)
 
@@ -79,14 +79,14 @@ def isValidName(memberName):
 
 def addNameRecord(memberName):
     import pickle
-    outputFile = 'invalidName.data'
+    outputFile = '/home/ubuntu/.qqbot-tmp/plugins/invalidName.data'
     fw = open(outputFile, 'wb')
     pickle.dump(memberName, fw)
     fw.close()
 
 def isNameRecorded(memberName):
     import pickle
-    outputFile = 'invalidName.data'
+    outputFile = '/home/ubuntu/.qqbot-tmp/plugins/invalidName.data'
     fd = open(inputFile, 'rb')
     while 1:
         try:
